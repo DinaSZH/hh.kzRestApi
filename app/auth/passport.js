@@ -1,28 +1,28 @@
-const passport = require('passport');
-const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
-const { secretKey } = require('./config');
+const passport = require('passport')
+const passportJWT = require('passport-jwt');
+const JwtStrategy = passportJWT.Strategy;
+const ExtractJwt  = passportJWT.ExtractJwt;
 
-const options = {
+const User = require("./User")
+const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: secretKey
+  secretOrKey: "secretKey",
 };
 
-// Подключение к базе данных или другому месту, где вы храните информацию о пользователях
-// const db = require('./db');
-
 passport.use(
-  new JwtStrategy(options, async (payload, done) => {
-    try {
-      // Вместо db.getUserById() используйте соответствующую функцию для получения пользователя из базы данных
-      const user = await db.getUserById(payload.userId);
+  new JwtStrategy(jwtOptions, async (jwtPayload, done) => {
+
+    const user = await User.findByPk(jwtPayload.id)
 
       if (user) {
         return done(null, user);
       } else {
         return done(null, false);
       }
-    } catch (error) {
-      return done(error, false);
-    }
+    
   })
 );
+
+module.exports = {
+  jwtOptions
+}
