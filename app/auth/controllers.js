@@ -7,12 +7,12 @@ const Role = require("./Role");
 
 const {jwtOptions} = require("./passport")
 
-const sendVerificationEmail = (req, res) => {
+const sendVerificationEmail = async (req, res) => {
   console.log(req.body);
 
   const code = "HH" + Date.now();
 
-  AuthCode.create({
+  await AuthCode.create({
     email: req.body.email,
     code: code,
     valid_till: Date.now() + 120000,
