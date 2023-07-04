@@ -12,6 +12,10 @@ app.use(passport.initialize());
 require('./app/auth/passport')
 
 app.use(require("./app/auth/routes"));
+app.use(require("./app/region/routes"));
+app.use(require("./app/skills/routes"));
+app.use(require("./app/employment-type/routes"));
+app.use(require("./app/languages/routes"));
 
 app.get("/", (req, res) => {
   res.send("ok");
