@@ -9,7 +9,7 @@ const Resume = sequelize.define("Resume", {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    lats_name: {
+    last_name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
