@@ -19,4 +19,6 @@ const ForeignLanguage = sequelize.define("ForeignLanguage", {
 
 ForeignLanguage.belongsTo(Resume, { foreignKey: "resumeId" });
 
+Resume.hasMany(ForeignLanguage, {foreignKey: 'resumeId', as: "foreignLanguages"}); 
+
 module.exports = ForeignLanguage;

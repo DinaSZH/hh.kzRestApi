@@ -31,4 +31,6 @@ const WorkingHistory = sequelize.define("WorkingHistory", {
 
 WorkingHistory.belongsTo(Resume, { foreignKey: "resumeId" });
 
+Resume.hasMany(WorkingHistory, {foreignKey: 'resumeId', as: "workingHistories"}); 
+
 module.exports = WorkingHistory;

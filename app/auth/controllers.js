@@ -60,6 +60,10 @@ const verifyCode = async (req, res) => {
   }
 };
 
+const signUp = (req, res) => {
+  
+}
+
 module.exports = {
   sendVerificationEmail,
   verifyCode,

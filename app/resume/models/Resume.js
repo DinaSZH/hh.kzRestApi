@@ -53,8 +53,8 @@ const Resume = sequelize.define("Resume", {
   }
 );
 
-Resume.belongsTo(City, { foreignKey: "cityId" });
-Resume.belongsTo(Country, { foreignKey: "citizenship" });
+Resume.belongsTo(City, { foreignKey: "cityId", as: "city" });
+Resume.belongsTo(Country, { foreignKey: "citizenship", as: "citizenshipObj"});
 Resume.belongsTo(User, { foreignKey: "userId" });
 
 
