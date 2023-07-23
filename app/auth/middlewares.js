@@ -1,5 +1,6 @@
 
 const Role = require("./Role");
+const User = require("./User");
 
 const isEmployee = async (req, res, next) =>{
     if(req.user) {
@@ -46,6 +47,15 @@ const validateSignup = async (req, res, next)=>{
         errors.password2 = "Пароли не совпадают";
     }
 
+    const user = await User.findOne({
+        where: {
+            email: req.body.email
+        }
+    })
+
+    if(user) {
+        errors.email = "Пользователь с таким email уже зарегестрирован";
+    }
     if(JSON.stringify(errors) !== JSON.stringify({})) res.status(400).send(errors)
     else next()
 
