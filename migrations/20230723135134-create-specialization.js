@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('SpecializationTypes', {
+    await queryInterface.createTable('Specializations', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,10 +13,20 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      specializationTypeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'SpecializationTypes',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE' 
+      }
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('SpecializationTypes');
+    await queryInterface.dropTable('Specializations');
   }
 };
