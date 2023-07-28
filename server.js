@@ -19,6 +19,8 @@ app.use(require("./app/skills/routes"));
 app.use(require("./app/employment-type/routes"));
 app.use(require("./app/languages/routes"));
 app.use(require("./app/resume/routes"));
+app.use(require("./app/specializations/routes"));
+app.use(require("./app/vacancy/routes"));
 
 app.get("/", (req, res) => {
   res.send("ok");

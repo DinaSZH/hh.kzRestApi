@@ -14,5 +14,6 @@ const Specialization = sequelize.define("Specialization", {
 );
 
 Specialization.belongsTo(SpecializationType, { foreignKey: "specializationTypeId" });
+SpecializationType.hasMany(Specialization, { foreignKey: "specializationTypeId", as: "specializations" });
 
 module.exports = Specialization;
