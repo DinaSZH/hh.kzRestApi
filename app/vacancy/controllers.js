@@ -70,11 +70,50 @@ const getVacancy = async(req, res) => {
         ]
     });
 
-    res.status(200).send(vacancy);
+    if(vacancy) res.status(200).send(vacancy);
+    else res.status(404).send({message: "Vacancy with that id doenst found "})
+}
+
+const deleteVacancy = async (req, res) => {
+    await Vacancy.destroy({
+        where: {
+            id: req.params.id,
+        },
+    })
+
+    res.status(200).end();
+}
+
+const editVacancy = async (req, res) => {
+
+    await Vacancy.update({
+        name: req.body.name,
+        specializationId: req.body.specializationId,
+        cityId: req.body.cityId,
+        description: req.body.description,
+        employmentTypeId: req.body.employmentTypeId,
+        salary_from: req.body.salary_from,
+        salary_to: req.body.salary_to,
+        salary_type: req.body.salary_type,
+        address: req.body.address,
+        experienceId: req.body.experienceId,
+        skills: req.body.skills,
+        about_company: req.body.about_company,
+        userId: req.user.id,
+        companyId: req.user.companyId
+    },  {
+        where: {
+            id:req.body.id
+    }})
+
+    res.status(200).end()
+
 }
 module.exports = {
     getExperinces, 
     createVacancy,
     getMyVacancies,
-    getVacancy
+    getVacancy,
+    deleteVacancy,
+    editVacancy
 }
