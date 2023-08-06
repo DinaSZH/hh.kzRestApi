@@ -4,6 +4,7 @@ const City = require("../region/City");
 const Specialization = require("../specializations/models/Specialization");
 const Experience = require("./models/Experience");
 const Vacancy =  require("./models/Vacancy");
+const { Op } = require('sequelize');
 
 const getExperinces = async (req, res) => {
     const exper = await Experience.findAll()
@@ -107,13 +108,66 @@ const editVacancy = async (req, res) => {
     }})
 
     res.status(200).end()
-
 }
+
+const searchVacancy = async (req, res) => {
+    console.log(req.query);
+
+    const options = {};
+    
+    const {
+      q,
+      specializationId,
+      cityId,
+      employmentTypeId,
+      salary,
+      salary_type,
+      experienceId,
+    } = req.query;
+  
+    if (q) {
+      options[Op.or] = [
+        { name: { [Op.iLike]: `%${q}%` } },
+        { description: { [Op.iLike]: `%${q}%` } },
+        { about_company: { [Op.iLike]: `%${q}%` } },
+        { skills: { [Op.iLike]: `%${q}%` } },
+      ];
+    }
+  
+    if (specializationId) {
+      options.specializationId = specializationId;
+    }
+  
+    if (cityId) {
+      options.cityId = cityId;
+    }
+  
+    if (employmentTypeId) {
+      options.employmentTypeId = employmentTypeId;
+    }
+  
+    if (experienceId) {
+      options.experienceId = experienceId;
+    }
+  
+    if (salary_type && salary) {
+      options.salary_from = { [Op.lte]: salary };
+      options.salary_to = { [Op.gte]: salary };
+      options.salary_type = salary_type;
+    }
+  
+    const vacancies = await Vacancy.findAll({
+      where: options,
+    });
+  
+    res.status(200).send(vacancies);
+  };
 module.exports = {
     getExperinces, 
     createVacancy,
     getMyVacancies,
     getVacancy,
     deleteVacancy,
-    editVacancy
+    editVacancy,
+    searchVacancy
 }
