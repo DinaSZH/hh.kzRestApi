@@ -6,6 +6,7 @@ const ResumeEmploymentType = require("./models/ResumeEmploymentType");
 const City = require("../region/City");
 const Country = require("../region/Country");
 const EmploymentType = require("../employment-type/EmploymentType");
+const { Op } = require('sequelize');
 
 const createResume = async (req, res) => {
     
@@ -235,6 +236,58 @@ const editResume = async (req, res) => {
 
 }
 
+const searchResume = async(req, res) => {
+    const options = {};
+    
+    const {
+      q,
+      cityId,
+      salary_from,
+      salary_to,
+      salary_type,
+      citizenship,
+    } = req.query;
+  
+    if (q) {
+      options[Op.or] = [
+        { first_name: { [Op.iLike]: `%${q}%` } },
+        { last_name: { [Op.iLike]: `%${q}%` } },
+        { position: { [Op.iLike]: `%${q}%` } },
+        { about: { [Op.iLike]: `%${q}%` } },
+        { skills: { [Op.iLike]: `%${q}%` } },
+      ];
+    }
+  
+    if (citizenship) {
+      options.citizenship = citizenship;
+    }
+  
+    if (cityId) {
+      options.cityId = cityId;
+    }
+  
+    if (salary_from && !salary_to) {
+      options.salary = {[Op.gte]: salary_from*1};
+    } else if(!salary_from && salary_to){
+        options.salary = {[Op.lte]: salary_to*1}
+    } else if(salary_from && salary_to){
+        options.salary = {[Op.between]: [salary_from*1, salary_to*1]}
+    } 
+
+  
+    if (salary_type && salary) {
+      options.salary_from = { [Op.lte]: salary };
+      options.salary_to = { [Op.gte]: salary };
+      options.salary_type = salary_type;
+    }
+  
+    const resumes = await Resume.findAll({
+      where: options,
+    });
+  
+    res.status(200).send(resumes);
+}
+
 module.exports = {
-    createResume, getMyResumes, getResume, deleteResume, editResume
+    createResume, getMyResumes, getResume, deleteResume, editResume, searchResume
 }
