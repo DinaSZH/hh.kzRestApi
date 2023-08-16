@@ -10,6 +10,7 @@ const Company = require("./Company");
 const {jwtOptions} = require("./passport")
 
 const sendVerificationEmail = async (req, res) => {
+  try {
   console.log(req.body);
 
   const code = "HH" + Date.now();
@@ -21,9 +22,13 @@ const sendVerificationEmail = async (req, res) => {
   });
   sendEmail(req.body.email, "Код авторизации", code);
   res.status(200).end();
+} catch(error){
+  res.status(500).send(error)
+}
 };
 
 const verifyCode = async (req, res) => {
+  try {
   console.log(req.body);
 
   const authCode = await AuthCode.findOne({ 
@@ -60,9 +65,14 @@ const verifyCode = async (req, res) => {
     { expiresIn: 24 * 60 * 60 * 365});
     res.status(200).send({token});
   }
+
+} catch(error){
+  res.status(500).send(error)
+}
 };
 
 const signUp = async (req, res) => {
+  try{
 
   const role = await Role.findOne({
     where: {
@@ -90,10 +100,13 @@ const signUp = async (req, res) => {
     })
 
     res.status(200).end();
-    
+  } catch(error){
+    res.status(500).send(error)
+}
 }
 
 const logIn = async (req, res) => {
+  try{
     if(!req.body.email || req.body.email.length === 0 ||
       !req.body.password || req.body.password.length === 0){
         res.status(401).send({message : "Bad Credentials"});
@@ -129,6 +142,9 @@ const logIn = async (req, res) => {
           res.status(401).send({message: "Password is incorrect"});
           }
       }
+    } catch(error){
+      res.status(500).send(error)
+  }
     }
 
 module.exports = {

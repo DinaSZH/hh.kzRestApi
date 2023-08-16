@@ -9,6 +9,7 @@ const EmploymentType = require("../employment-type/EmploymentType");
 const { Op } = require('sequelize');
 
 const createResume = async (req, res) => {
+    try{
     
     const resume = await Resume.create({
         first_name: req.body.first_name,
@@ -74,20 +75,27 @@ const createResume = async (req, res) => {
 
     console.log(req.body.gender)
     res.status(200).send(resume);
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const getMyResumes = async (req, res) => {
+    try{
 
     const resumes = await Resume.findAll({
         where: {userId:req.user.id},
     })
 
     res.status(200).send(resumes);
-
+} catch(error){
+    res.status(500).send(error)
+}
 
 }
 
 const getResume = async (req, res) => {
+    try{
 
     const resume = await Resume.findByPk(req.params.id, {
         include: [
@@ -119,9 +127,13 @@ const getResume = async (req, res) => {
     });
 
     res.status(200).send(resume);
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const deleteResume = async (req, res) => {
+    try{
 
     const data = await Resume.destroy({
         where: {
@@ -131,10 +143,14 @@ const deleteResume = async (req, res) => {
 
     res.status(200).end();
 
+} catch(error){
+    res.status(500).send(error)
+}
 
 }
 
 const editResume = async (req, res) => {
+    try{
 
     await Resume.update({
         first_name: req.body.first_name,
@@ -233,10 +249,14 @@ const editResume = async (req, res) => {
 
     res.status(200).end();
 
+} catch(error){
+    res.status(500).send(error)
+}
 
 }
 
 const searchResume = async(req, res) => {
+    try{
     const options = {};
     
     const {
@@ -286,6 +306,9 @@ const searchResume = async(req, res) => {
     });
   
     res.status(200).send(resumes);
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 module.exports = {

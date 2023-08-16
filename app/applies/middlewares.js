@@ -14,6 +14,7 @@ const validateApply = (req, res, next) => {
 }
 
 const isAuthorOfApply = async (req,res, next) =>{
+    try{
     const id = req.params.id;
 
     const apply = await Apply.findByPk(id);
@@ -33,16 +34,22 @@ const isAuthorOfApply = async (req,res, next) =>{
         } else{
             res.status(403).send({message: "Access forbidden"})
         }
-    
     }
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const isApplyExist = async(req,res, next) => {
+    try {
     const apply = await Apply.findByPk(req.body.applyId);
 
     if(!apply) res.status(400).send({message: "apply with that id doenst exist "});
     req.body.id = apply.vacancyId
     next()
+    } catch(error){
+        res.status(500).send(error)
+    }
 }
 
 

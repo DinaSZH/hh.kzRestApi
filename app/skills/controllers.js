@@ -2,12 +2,17 @@ const Skill = require('./Skill');
 const {Op} = require('sequelize');
 
 const getAllSkills = async (req,res) =>{
+    try{
     const skills = await Skill.findAll();
 
     res.status(200).send(skills);
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const getSkillsbyKey = async (req,res) =>{
+    try{
     const skills = await Skill.findAll({
         where: {
             name: {
@@ -17,6 +22,9 @@ const getSkillsbyKey = async (req,res) =>{
     });
 
     res.status(200).send(skills);
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 

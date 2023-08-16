@@ -7,12 +7,17 @@ const Vacancy =  require("./models/Vacancy");
 const { Op } = require('sequelize');
 
 const getExperinces = async (req, res) => {
+    try{
     const exper = await Experience.findAll()
 
     res.status(200).send(exper)
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const createVacancy = async (req, res) => {
+    try{
 
     const vacancy = await Vacancy.create(
         {
@@ -33,9 +38,13 @@ const createVacancy = async (req, res) => {
           }
     )
     res.status(200).send(vacancy);
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const getMyVacancies = async (req, res) =>{
+    try{
     const vacancies = await Vacancy.findAll({
         where: {
             companyId: req.user.companyId
@@ -43,6 +52,9 @@ const getMyVacancies = async (req, res) =>{
     })
 
     res.status(200).send(vacancies);
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const getVacancy = async(req, res) => {
@@ -76,6 +88,7 @@ const getVacancy = async(req, res) => {
 }
 
 const deleteVacancy = async (req, res) => {
+    try{
     await Vacancy.destroy({
         where: {
             id: req.params.id,
@@ -83,9 +96,13 @@ const deleteVacancy = async (req, res) => {
     })
 
     res.status(200).end();
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const editVacancy = async (req, res) => {
+    try{
 
     await Vacancy.update({
         name: req.body.name,
@@ -108,9 +125,13 @@ const editVacancy = async (req, res) => {
     }})
 
     res.status(200).end()
+} catch(error){
+    res.status(500).send(error)
+}
 }
 
 const searchVacancy = async (req, res) => {
+    try{
     console.log(req.query);
 
     const options = {};
@@ -161,6 +182,9 @@ const searchVacancy = async (req, res) => {
     });
   
     res.status(200).send(vacancies);
+} catch(error){
+    res.status(500).send(error)
+}
   };
 module.exports = {
     getExperinces, 
