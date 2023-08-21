@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "dev": "nodemon server.js",
-    "prod_": "set NODE_ENV=production node server.js",
-    "prod": "set NODE_ENV=test&&node server.js"
+    "prod": "set NODE_ENV=production node server.js",
+    "prod2": "set NODE_ENV=test&&node server.js"
   },
   "author": "",
   "license": "ISC",
